@@ -1,24 +1,14 @@
 {
   "name": "automacao-carrosseis-ai",
   "version": "1.0.0",
-  "description": "Projeto para gerar carrosséis programáticos com IA usando Puppeteer + Express",
+  "description": "Servidor para geração automática de carrosséis com Puppeteer",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
-  "keywords": [
-    "puppeteer",
-    "carrossel",
-    "automacao",
-    "instagram",
-    "make",
-    "openai"
-  ],
-  "author": "Dim (Leve Inovação)",
-  "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.20.2",
     "express": "^4.18.2",
+    "body-parser": "^1.20.2",
     "puppeteer": "^21.3.8"
   }
 }

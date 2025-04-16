@@ -1,3 +1,18 @@
+# Ignorar a pasta de dependências
 node_modules/
-slides/
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos do sistema
+.DS_Store
+
+# Ignorar ambiente local
 .env
+
+# Ignorar cache de IDEs
+.vscode/
+.idea/
+
+# Ignore a saída do Puppeteer, se você usar
+screenshots/

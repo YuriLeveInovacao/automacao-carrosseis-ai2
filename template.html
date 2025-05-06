@@ -3,63 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <style>
-    body { margin:0; padding:0; }
-    #carousel-container {
-      width:1080px; height:1080px; overflow:hidden; position:relative;
-      background:#f7f7f7;
+    body {
+      margin: 0;
+      padding: 0;
       font-family: 'Poppins', sans-serif;
-      color:#0b2447; text-align:center;
+      background-color: #f7f7f7;
+      width: 1080px;
+      height: 1080px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #0b2447;
+      text-align: center;
     }
     .slide {
-      width:100%; height:100%; position:absolute; top:0; left:0;
-      display:flex; flex-direction:column; align-items:center;
-      justify-content:center; box-sizing:border-box; padding:60px;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      padding: 60px;
+      box-sizing: border-box;
+    }
+    .texto {
+      font-size: 32px;
+      line-height: 1.4;
+      margin: 20px 0;
     }
     .logo {
-      position:absolute; bottom:40px; right:40px; width:100px;
-    }
-    .title {
-      font-size:48px; font-weight:600; margin-bottom:20px;
-    }
-    .subtitle, .texto {
-      font-size:32px; line-height:1.4; margin:10px 0;
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      width: 100px;
     }
   </style>
 </head>
 <body>
-  <div id="carousel-container">
 
-    <!-- Slide 1 -->
-    <div class="slide" id="slide1">
-      <div class="title">{{slide1_title}}</div>
-      <div class="subtitle">{{slide1_subtitle}}</div>
-      <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="slide" id="slide2" style="display:none;">
-      <div class="texto">{{slide2_text}}</div>
-      <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="slide" id="slide3" style="display:none;">
-      <div class="texto">{{slide3_text}}</div>
-      <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
-    </div>
-
-    <!-- Slide 4 -->
-    <div class="slide" id="slide4" style="display:none;">
-      <div class="texto">{{slide4_text}}</div>
-      <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
-    </div>
-
-    <!-- Slide 5 -->
-    <div class="slide" id="slide5" style="display:none;">
-      <div class="texto">{{slide5_text}}</div>
-      <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
-    </div>
-
+  <!-- Slide 1 -->
+  <div class="slide" id="slide1">
+    <div class="texto">{{SLIDE1}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
   </div>
+
+  <!-- Slide 2 -->
+  <div class="slide" id="slide2">
+    <div class="texto">{{SLIDE2}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide" id="slide3">
+    <div class="texto">{{SLIDE3}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide" id="slide4">
+    <div class="texto">{{SLIDE4}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
+
+  <!-- Slide 5 -->
+  <div class="slide" id="slide5">
+    <div class="texto">{{SLIDE5}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
+
 </body>
 </html>

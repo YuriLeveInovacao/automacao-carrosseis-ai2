@@ -5,66 +5,61 @@ const { exec }   = require('child_process');
 const fs         = require('fs');
 const path       = require('path');
 
-const app = express();
+const app  = express();
 const PORT = process.env.PORT || 3000;
-
-// Monta PUBLIC_URL dinamicamente
-const PUBLIC_URL = process.env.PUBLIC_URL
-  || (process.env.RAILWAY_PUBLIC_DOMAIN
-      ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
-      : 'https://automacao-carrosseis-ai2-production.up.railway.app');
 
 // 1) Body parser para JSON
 app.use(bodyParser.json());
 
-// 2) Serve a pasta slides (incluindo logo.png e slides gerados)
+// 2) Sirve a pasta "slides" como conteúdo estático
 app.use('/slides', express.static(path.join(__dirname, 'slides')));
 
-// 3) POST /generate
+// 3) Rota POST /generate
 app.post('/generate', (req, res) => {
   const data = req.body;
-  // Espera agora:
-  // {
-  //   slide1_title, slide1_subtitle,
-  //   slide2_text, slide3_text, slide4_text, slide5_text
-  // }
+  // espera: { slide1, slide2, slide3, slide4, slide5, logoPath? }
 
-  // 3.1) Lê e substitui placeholders
-  const tplPath = path.join(__dirname, 'template.html');
-  let html = fs.readFileSync(tplPath, 'utf-8');
+  // 3.1) Injeta placeholders no template
+  const templatePath = path.join(__dirname, 'template.html');
+  const template     = fs.readFileSync(templatePath, 'utf-8');
+  const html = template
+    .replace(/{{SLIDE1}}/g, data.slide1 || '')
+    .replace(/{{SLIDE2}}/g, data.slide2 || '')
+    .replace(/{{SLIDE3}}/g, data.slide3 || '')
+    .replace(/{{SLIDE4}}/g, data.slide4 || '')
+    .replace(/{{SLIDE5}}/g, data.slide5 || '')
+    .replace(/{{LOGO_PATH}}/g, data.logoPath || '');
 
-  html = html
-    .replace(/{{LOGO_PATH}}/g, `${PUBLIC_URL}/slides/logo.png`)
-    .replace(/{{slide1_title}}/g,     data.slide1_title    || '')
-    .replace(/{{slide1_subtitle}}/g,  data.slide1_subtitle || '')
-    .replace(/{{slide2_text}}/g,      data.slide2_text     || '')
-    .replace(/{{slide3_text}}/g,      data.slide3_text     || '')
-    .replace(/{{slide4_text}}/g,      data.slide4_text     || '')
-    .replace(/{{slide5_text}}/g,      data.slide5_text     || '');
-
-  // 3.2) Grava o HTML pro Puppeteer
+  // 3.2) Grava o HTML que o Puppeteer vai ler
   fs.writeFileSync(path.join(__dirname, 'carrossel.html'), html, 'utf-8');
 
-  // 3.3) Chama o script que gera os PNGs
+  // 3.3) Chama o script do Puppeteer para gerar os PNGs
   exec('node generateSlides.js', (err, stdout, stderr) => {
     if (err) {
-      console.error('🔥 Erro ao gerar slides:', stderr || err.message);
-      return res.status(500).send(`Erro ao gerar slides:\n${stderr||err.message}`);
+      console.error('🔥 Erro ao gerar os slides:', stderr || err.message);
+      return res
+        .status(500)
+        .send(`Erro ao gerar slides:\n${stderr || err.message}`);
     }
-    console.log('✅ Slides gerados:', stdout);
 
-    // 3.4) Retorna as URLs públicas
+    console.log('✅ Slides gerados com sucesso');
+    console.log('📟 Puppeteer output:', stdout);
+
+    // 3.4) Retorna as URLs públicas dos slides
+    const baseUrl = process.env.PUBLIC_URL
+      || 'https://automacao-carrosseis-ai2-production.up.railway.app';
+
     return res.json({
-      slide1Url: `${PUBLIC_URL}/slides/slide1.png`,
-      slide2Url: `${PUBLIC_URL}/slides/slide2.png`,
-      slide3Url: `${PUBLIC_URL}/slides/slide3.png`,
-      slide4Url: `${PUBLIC_URL}/slides/slide4.png`,
-      slide5Url: `${PUBLIC_URL}/slides/slide5.png`,
+      slide1Url: `${baseUrl}/slides/slide1.png`,
+      slide2Url: `${baseUrl}/slides/slide2.png`,
+      slide3Url: `${baseUrl}/slides/slide3.png`,
+      slide4Url: `${baseUrl}/slides/slide4.png`,
+      slide5Url: `${baseUrl}/slides/slide5.png`,
     });
   });
 });
 
-// 4) Sobe o servidor
+// 4) Inicia o servidor em 0.0.0.0 e exibe porta dinâmica
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`);
 });

@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 // 1) Body parser para JSON
 app.use(bodyParser.json());
 
-// 2) Sirve a pasta "slides" como conteúdo estático
+// 2) Serve a pasta "slides" como conteúdo estático
 app.use('/slides', express.static(path.join(__dirname, 'slides')));
 
 // 3) Rota POST /generate
@@ -60,7 +60,7 @@ app.post('/generate', (req, res) => {
   });
 });
 
-// 4) Inicia o servidor
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+// 4) Inicia o servidor em 0.0.0.0 e exibe porta dinâmica
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`);
 });

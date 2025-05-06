@@ -40,6 +40,14 @@ app.post('/generate', (req, res) => {
     'utf-8'
   );
 
+  console.log('▶️ Chamando o Puppeteer: node generateSlides.js');
+- exec('node generateSlides.js', (err, stdout, stderr) => {
++ exec('node generateSlides.js', (err, stdout, stderr) => {
++   console.log('--- START PUPPETEER OUTPUT ---');
++   console.log('STDOUT:', stdout);
++   console.log('STDERR:', stderr);
++   console.log('---  END PUPPETEER OUTPUT  ---');
+
   // 3.3) Chama o Puppeteer para gerar os PNGs
   console.log('▶️ Chamando o Puppeteer: node generateSlides.js');
   exec('node generateSlides.js', (err, stdout, stderr) => {

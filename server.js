@@ -2,10 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 const fs = require('fs');
+const path = require('path')
 const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.json());
+
+app.use('/slides', express.static(path.join(__dirname,'slides')));
 
 // POST /generate
 app.post('/generate', (req, res) => {

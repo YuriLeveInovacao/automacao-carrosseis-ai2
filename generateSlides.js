@@ -1,43 +1,46 @@
+// generateSlides.js
 const puppeteer = require('puppeteer');
-const path = require('path');
-const fs = require('fs');
+const path      = require('path');
+const fs        = require('fs');
 
-// Pasta de saída para os slides
+// 1) Cria a pasta de saída ./slides se não existir
 const outputDir = path.join(__dirname, 'slides');
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir);
 }
 
 (async () => {
+  // 2) Inicializa o Chromium headless com flags para ambientes containerizados
   const browser = await puppeteer.launch({
-  args: [
-'--no-sandbox',
-'--disable-setuid-sandbox'
-]
-});
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
 
-  const filePath = `file:${path.join(__dirname, 'carrossel.html')}`;
+  // 3) Carrega o HTML gerado pelo server
+  const filePath = `file://${path.join(__dirname, 'carrossel.html')}`;
   await page.goto(filePath, { waitUntil: 'networkidle0' });
 
+  // 4) Para cada slide, faz screenshot do seu contêiner
   for (let i = 1; i <= 5; i++) {
-    const elementHandle = await page.$(`#slide${i}`);
+    const selector = `#slide${i}`;
+    const elementHandle = await page.$(selector);
     if (elementHandle) {
-      const boundingBox = await elementHandle.boundingBox();
+      const box = await elementHandle.boundingBox();
       await page.screenshot({
         path: path.join(outputDir, `slide${i}.png`),
         clip: {
-          x: boundingBox.x,
-          y: boundingBox.y,
-          width: boundingBox.width,
-          height: boundingBox.height
+          x:      box.x,
+          y:      box.y,
+          width:  box.width,
+          height: box.height
         }
       });
       console.log(`✅ Slide ${i} gerado com sucesso.`);
     } else {
-      console.warn(`⚠️ Slide ${i} não encontrado.`);
+      console.warn(`⚠️ Slide ${i} não encontrado no DOM.`);
     }
   }
 
+  // 5) Fecha o browser
   await browser.close();
 })();

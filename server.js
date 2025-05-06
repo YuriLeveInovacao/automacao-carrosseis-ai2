@@ -29,8 +29,15 @@ app.post('/generate', (req, res) => {
       return res.status(500).send('Erro ao gerar slides');
     }
     console.log('Slides gerados com sucesso!');
-    res.send('Slides gerados com sucesso!');
-  });
+    const baseUrl = process.env.PUBLIC_URL || 'https://automacao-carrosseis-ai2-production.up.railway.app';
+    res.json({
+      slide1Url:  `${baseUrl}/slides/slide1.png`,
+      slide2Url:  `${baseUrl}/slides/slide2.png`,
+      slide3Url:  `${baseUrl}/slides/slide3.png`,
+      slide4Url:  `${baseUrl}/slides/slide4.png`,
+      slide5Url:  `${baseUrl}/slides/slide5.png`
+    });
+    });
 });
 
 app.listen(PORT, () => {

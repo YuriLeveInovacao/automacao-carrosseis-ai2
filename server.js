@@ -64,6 +64,10 @@ app.post('/generate', (req, res) => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.send('OK');
+});
+
 // 4) Inicia o servidor em 0.0.0.0 e porta dinâmica
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`);

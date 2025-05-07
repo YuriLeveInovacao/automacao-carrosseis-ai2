@@ -35,6 +35,7 @@ app.post('/generate', (req, res) => {
 
   // 3.3) Escreve o HTML final que o Puppeteer vai ler
   fs.writeFileSync(path.join(__dirname, 'carrossel.html'), html, 'utf8');
+  console.log('✅ HTML gerado com sucesso');
 
   // 3.4) Chama o script Puppeteer para gerar os PNGs
   exec('node generateSlides.js', (err, stdout, stderr) => {
@@ -42,7 +43,8 @@ app.post('/generate', (req, res) => {
       console.error('🔥 Erro ao gerar os slides:', stderr || err.message);
       return res
         .status(500)
-        .send(`Erro ao gerar slides:\n${stderr || err.message}`);
+        .send(`Erro ao gerar slides:
+${stderr || err.message}`);
     }
 
     console.log('✅ Slides gerados com sucesso');
@@ -51,6 +53,7 @@ app.post('/generate', (req, res) => {
     // 3.5) Monta a base URL pública
     const baseUrl = process.env.PUBLIC_URL
       || 'https://automacao-carrosseis-ai2-production.up.railway.app';
+    console.log('Base URL:', baseUrl);  // Log da base URL
 
     // 3.6) Retorna JSON com todas as URLs
     return res.json({

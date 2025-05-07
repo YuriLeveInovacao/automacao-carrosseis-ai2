@@ -3,16 +3,21 @@ const path      = require('path');
 const fs        = require('fs');
 
 const outputDir = path.join(__dirname, 'slides');
-if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+if (!fs.existsSync(outputDir)) {
+  console.log('✅ Criando diretório "slides"');
+  fs.mkdirSync(outputDir);
+}
 
+// Inicia o Puppeteer
 (async () => {
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
+  console.log('✅ Puppeteer iniciado com sucesso');
   const page = await browser.newPage();
-  // define viewport 1080×1080
+  // Define o tamanho da tela (1080×1080)
   await page.setViewport({ width: 1080, height: 1080 });
-  // carrega o HTML gerado
+  // Carrega o HTML gerado
   const filePath = `file://${path.join(__dirname, 'carrossel.html')}`;
   await page.goto(filePath, { waitUntil: 'networkidle0' });
 
@@ -23,13 +28,16 @@ if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
       console.warn(`⚠️ Slide ${i} não encontrado no DOM.`);
       continue;
     }
-    // screenshot diretamente do elemento
+    // Screenshot diretamente do elemento
+    const slidePath = path.join(outputDir, `slide${i}.png`);
+    console.log(`✅ Salvando slide: ${slidePath}`);
     await elementHandle.screenshot({
-      path: path.join(outputDir, `slide${i}.png`),
-      omitBackground: true  // remove fundo padrão do navegador
+      path: slidePath,
+      omitBackground: true  // Remove o fundo padrão do navegador
     });
     console.log(`✅ Slide ${i} gerado com sucesso.`);
   }
 
   await browser.close();
+  console.log('✅ Puppeteer fechado com sucesso');
 })();

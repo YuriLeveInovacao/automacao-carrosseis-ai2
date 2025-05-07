@@ -1,4 +1,3 @@
-// generateHTML.js
 const fs   = require('fs');
 const path = require('path');
 
@@ -36,4 +35,4 @@ fs.writeFileSync(
   'utf-8'
 );
 
-console.log('HTML gerado em carrossel.html');
+console.log('✅ HTML gerado em carrossel.html');

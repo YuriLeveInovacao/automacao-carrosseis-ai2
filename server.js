@@ -1,9 +1,9 @@
 // server.js
-const express    = require('express');
-const bodyParser = require('body-parser');
-const { exec }   = require('child_process');
-const fs         = require('fs');
-const path       = require('path');
+const express     = require('express');
+const bodyParser  = require('body-parser');
+const { exec }    = require('child_process');
+const fs          = require('fs');
+const path        = require('path');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -11,24 +11,25 @@ const PORT = process.env.PORT || 3000;
 // 1) Body parser para JSON
 app.use(bodyParser.json());
 
-// 2) Sirve a pasta "slides" como conteúdo estático
+// 2) Serve a pasta "slides" como conteúdo estático
 app.use('/slides', express.static(path.join(__dirname, 'slides')));
 
 // 3) Rota POST /generate
 app.post('/generate', (req, res) => {
   const data = req.body;
-  // espera: { slide1, slide2, slide3, slide4, slide5, logoPath? }
+  // espera: { imagePath, logoPath, slide1, slide2, slide3, slide4, slide5 }
 
-  // 3.1) Injeta placeholders no template
+  // 3.1) Injeta placeholders no template (incluindo IMAGE_PATH de volta)
   const templatePath = path.join(__dirname, 'template.html');
   const template     = fs.readFileSync(templatePath, 'utf-8');
   const html = template
-    .replace(/{{SLIDE1}}/g, data.slide1 || '')
-    .replace(/{{SLIDE2}}/g, data.slide2 || '')
-    .replace(/{{SLIDE3}}/g, data.slide3 || '')
-    .replace(/{{SLIDE4}}/g, data.slide4 || '')
-    .replace(/{{SLIDE5}}/g, data.slide5 || '')
-    .replace(/{{LOGO_PATH}}/g, data.logoPath || '');
+    .replace(/{{IMAGE_PATH}}/g, data.imagePath || '')
+    .replace(/{{LOGO_PATH}}/g,   data.logoPath   || '')
+    .replace(/{{SLIDE1}}/g,      data.slide1     || '')
+    .replace(/{{SLIDE2}}/g,      data.slide2     || '')
+    .replace(/{{SLIDE3}}/g,      data.slide3     || '')
+    .replace(/{{SLIDE4}}/g,      data.slide4     || '')
+    .replace(/{{SLIDE5}}/g,      data.slide5     || '');
 
   // 3.2) Grava o HTML que o Puppeteer vai ler
   fs.writeFileSync(path.join(__dirname, 'carrossel.html'), html, 'utf-8');

@@ -1,88 +1,77 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Poppins', sans-serif;
-        background-color: #f7f7f7;
-        width: 1080px;
-        height: 1080px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: #0b2447;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    /* Reseta margens e define viewport global */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Container de cada slide: exatamente 1080×1080 */
+    .slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      box-sizing: border-box;
+      color: #0b2447;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;           /* remove padding interno */
+    }
+    /* Texto centralizado com margem lateral */
+    .texto {
+      font-size: 32px;
+      line-height: 1.4;
+      padding: 0 60px;      /* folga horizontal para texto não colar no limite */
+    }
+    /* Logo no canto inferior direito */
+    .logo {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      width: 100px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Slide 1 -->
+  <div class="slide" id="slide1">
+    <div class="texto">{{SLIDE1}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
 
-      .slide {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        padding: 60px;
-        box-sizing: border-box;
-      }
+  <!-- Slide 2 -->
+  <div class="slide" id="slide2">
+    <div class="texto">{{SLIDE2}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
 
-      .img-principal {
-        max-width: 80%;
-        max-height: 60%;
-        margin-bottom: 30px;
-      }
+  <!-- Slide 3 -->
+  <div class="slide" id="slide3">
+    <div class="texto">{{SLIDE3}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
 
-      .logo {
-        position: absolute;
-        bottom: 40px;
-        right: 40px;
-        width: 100px;
-      }
+  <!-- Slide 4 -->
+  <div class="slide" id="slide4">
+    <div class="texto">{{SLIDE4}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
 
-      .titulo {
-        font-size: 42px;
-        font-weight: bold;
-        margin-bottom: 20px;
-      }
-
-      .texto {
-        font-size: 32px;
-        font-weight: normal;
-        line-height: 1.4;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Slide 1: Imagem + Título -->
-    <div class="slide" id="slide1">
-      <img src="{{image1_path}}" alt="Imagem IA" class="img-principal" />
-      <div class="titulo">{{slide1_title}}</div>
-      <div class="texto">{{slide1_subtitle}}</div>
-      <img src="{{logo_path}}" class="logo" alt="Logo Leve" />
-    </div>
-
-    <!-- Slide 2: Informativo 1 -->
-    <div class="slide" id="slide2">
-      <div class="texto">{{slide2_text}}</div>
-      <img src="{{logo_path}}" class="logo" alt="Logo Leve" />
-    </div>
-
-    <!-- Slide 3: Informativo 2 -->
-    <div class="slide" id="slide3">
-      <div class="texto">{{slide3_text}}</div>
-      <img src="{{logo_path}}" class="logo" alt="Logo Leve" />
-    </div>
-
-    <!-- Slide 4: Provocativo -->
-    <div class="slide" id="slide4">
-      <div class="texto">{{slide4_text}}</div>
-      <img src="{{logo_path}}" class="logo" alt="Logo Leve" />
-    </div>
-
-    <!-- Slide 5: Call to Action -->
-    <div class="slide" id="slide5">
-      <div class="texto">{{slide5_text}}</div>
-      <img src="{{logo_path}}" class="logo" alt="Logo Leve" />
-    </div>
-  </body>
+  <!-- Slide 5 -->
+  <div class="slide" id="slide5">
+    <div class="texto">{{SLIDE5}}</div>
+    <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
+  </div>
+</body>
 </html>

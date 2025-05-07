@@ -6,74 +6,60 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background-color: #f7f7f7;
+    }
+    .slide {
       width: 1080px;
       height: 1080px;
+      background-color: #f7f7f7;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      position: relative;
+      box-sizing: border-box;
       color: #0b2447;
       text-align: center;
     }
-    .slide {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      padding: 60px;
-      box-sizing: border-box;
-    }
-    .img-principal {
-      max-width: 80%;
-      max-height: 60%;
-      margin-bottom: 30px;
+    .texto {
+      font-family: 'Poppins', sans-serif;
+      font-size: 32px;
+      line-height: 1.4;
+      padding: 0 60px;        /* deixa uma margem lateral para texto não encostar */
     }
     .logo {
       position: absolute;
       bottom: 40px;
       right: 40px;
       width: 100px;
-    }
-    .texto {
-      font-size: 32px;
-      line-height: 1.4;
-      margin: 20px 0;
+      height: auto;
     }
   </style>
 </head>
 <body>
-
   <!-- Slide 1 -->
   <div class="slide" id="slide1">
-    <img src="{{IMAGE_PATH}}" alt="Imagem IA" class="img-principal" />
     <div class="texto">{{SLIDE1}}</div>
     <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
   </div>
-
   <!-- Slide 2 -->
   <div class="slide" id="slide2">
     <div class="texto">{{SLIDE2}}</div>
     <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
   </div>
-
   <!-- Slide 3 -->
   <div class="slide" id="slide3">
     <div class="texto">{{SLIDE3}}</div>
     <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
   </div>
-
   <!-- Slide 4 -->
   <div class="slide" id="slide4">
     <div class="texto">{{SLIDE4}}</div>
     <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
   </div>
-
   <!-- Slide 5 -->
   <div class="slide" id="slide5">
     <div class="texto">{{SLIDE5}}</div>
     <img src="{{LOGO_PATH}}" class="logo" alt="Logo Leve" />
   </div>
-
 </body>
 </html>

@@ -1,39 +1,46 @@
 // server.js
-const express    = require('express');
+const express   = require('express');
 const bodyParser = require('body-parser');
-const { exec }   = require('child_process');
-const fs         = require('fs');
-const path       = require('path');
+const { exec }  = require('child_process');
+const fs        = require('fs');
+const path      = require('path');
 
-const app  = express();
+const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Resolve a URL pública (Railway ou variável CUSTOM)
+const PUBLIC_URL = process.env.PUBLIC_URL
+  || (process.env.RAILWAY_PUBLIC_DOMAIN
+      ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+      : 'https://automacao-carrosseis-ai2-production.up.railway.app');
 
 // 1) Body parser para JSON
 app.use(bodyParser.json());
 
-// 2) Sirve a pasta "slides" como conteúdo estático
+// 2) Serve a pasta "slides" e o logo como conteúdo estático
 app.use('/slides', express.static(path.join(__dirname, 'slides')));
 
 // 3) Rota POST /generate
 app.post('/generate', (req, res) => {
   const data = req.body;
-  // espera: { slide1, slide2, slide3, slide4, slide5, logoPath? }
+  // espera: { slide1, slide2, slide3, slide4, slide5 }
 
   // 3.1) Injeta placeholders no template
   const templatePath = path.join(__dirname, 'template.html');
-  const template     = fs.readFileSync(templatePath, 'utf-8');
-  const html = template
+  let html = fs.readFileSync(templatePath, 'utf-8');
+
+  html = html
+    .replace(/{{LOGO_PATH}}/g, data.logoPath || `${PUBLIC_URL}/slides/logo.png`)
     .replace(/{{SLIDE1}}/g, data.slide1 || '')
     .replace(/{{SLIDE2}}/g, data.slide2 || '')
     .replace(/{{SLIDE3}}/g, data.slide3 || '')
     .replace(/{{SLIDE4}}/g, data.slide4 || '')
-    .replace(/{{SLIDE5}}/g, data.slide5 || '')
-    .replace(/{{LOGO_PATH}}/g, data.logoPath || '');
+    .replace(/{{SLIDE5}}/g, data.slide5 || '');
 
   // 3.2) Grava o HTML que o Puppeteer vai ler
   fs.writeFileSync(path.join(__dirname, 'carrossel.html'), html, 'utf-8');
 
-  // 3.3) Chama o script do Puppeteer para gerar os PNGs
+  // 3.3) Executa o Puppeteer para gerar os PNGs
   exec('node generateSlides.js', (err, stdout, stderr) => {
     if (err) {
       console.error('🔥 Erro ao gerar os slides:', stderr || err.message);
@@ -46,15 +53,12 @@ app.post('/generate', (req, res) => {
     console.log('📟 Puppeteer output:', stdout);
 
     // 3.4) Retorna as URLs públicas dos slides
-    const baseUrl = process.env.PUBLIC_URL
-      || 'https://automacao-carrosseis-ai2-production.up.railway.app';
-
     return res.json({
-      slide1Url: `${baseUrl}/slides/slide1.png`,
-      slide2Url: `${baseUrl}/slides/slide2.png`,
-      slide3Url: `${baseUrl}/slides/slide3.png`,
-      slide4Url: `${baseUrl}/slides/slide4.png`,
-      slide5Url: `${baseUrl}/slides/slide5.png`,
+      slide1Url: `${PUBLIC_URL}/slides/slide1.png`,
+      slide2Url: `${PUBLIC_URL}/slides/slide2.png`,
+      slide3Url: `${PUBLIC_URL}/slides/slide3.png`,
+      slide4Url: `${PUBLIC_URL}/slides/slide4.png`,
+      slide5Url: `${PUBLIC_URL}/slides/slide5.png`,
     });
   });
 });
